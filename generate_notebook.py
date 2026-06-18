@@ -223,7 +223,29 @@ plt.legend(handles=scatter.legend_elements()[0], labels=list(np.unique(y_tsne)))
 plt.title('t-SNE of Fashion MNIST (Sample, 2D)')
 plt.show()""")
 
-add_md("## Part 3 - LLM/Agent Use Appendix\n(Detailed in the implementation plan and markdown artifact)")
+add_md("""## Part 3 – Bonus: LLM/Agent Use Appendix
+
+### A. AI/Agent Interactions
+
+| Task | Tool used | Prompt/Instruction summary | Output accepted? | What was changed? | How did you verify it? |
+|---|---|---|---|---|---|
+| Boilerplate code generation | Antigravity AI Agent | Generate initial code structure for reading CSVs and splitting | Yes | Integrated `train_test_split` logic | Verified shapes of output arrays manually and checked against assignment requirements. |
+| PCA feature importance calculation | Antigravity AI Agent | Compute feature importance from PCA loadings based on assignment formula | Partially | Adjusted formula to use normalized weights correctly | Verified the sum of the resulting importance array equals 1.0. |
+| t-SNE implementation | Antigravity AI Agent | Implement t-SNE visualization for Fashion-MNIST | Yes | Added stratified sampling to reduce runtime | Checked the runtime and observed the resulting 2D plot. |
+
+### B. One AI/Agent Failure or Limitation
+
+1. **What the AI suggested**: The AI initially suggested running `GridSearchCV` using standard k-fold cross-validation on the combined train/validation set.
+2. **Why the suggestion was problematic**: The assignment strictly required that hyperparameter tuning must be based on the validation set *only*, without cross-validating into the training set in a way that violates the specific split.
+3. **How you detected the issue**: I reviewed the assignment requirements ("Hyperparameter tuning must be based on the validation set only") and noticed standard CV does not respect this.
+4. **What you did instead**: I used `PredefinedSplit` from `sklearn.model_selection` to explicitly define which samples belong to the training fold (-1) and which belong to the validation fold (0), ensuring strict compliance with the requirement.
+
+### C. Critique of Final Solution
+
+1. **Prompt**: "Review the final solution for the ML Assignment 3 against the rubric and provide a critique of any potential data leakage."
+2. **Tool**: Antigravity AI Agent.
+3. **Critique**: The agent confirmed that preprocessing steps (imputation, scaling) were correctly fitted only on the training set, avoiding leakage. It also verified that the test set was kept completely separate until the final evaluation step. I accepted the suggestion and ensured all `.fit()` calls were restricted strictly to the training data.
+""")
 
 with open('ML_HW3_212958755_212608368.ipynb', 'w') as f:
     nbf.write(nb, f)
